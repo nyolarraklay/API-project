@@ -34,14 +34,23 @@ export const createProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   const { id } = req.params; // Extract the product ID from the request parameters
 
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return res
+    .status(400)  
+    .json({ success: false, message: "Invalid product ID" });
+  }
+  // Check if the ID is valid
+  // If the ID is not valid, return a 400 Bad Request response
+  // with a message indicating that the ID is invalid.
+  // If the ID is valid, proceed to delete the product from the database
+  // using the findByIdAndDelete method of the Product model.
+  // If the product is not found, return a 404 Not Found response
+  // with a message indicating that the product was not found.  
+
+
   try {
     const deletedProduct = await Product.findByIdAndDelete(id); // Find and delete the product by ID
-    if (!deletedProduct) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
-    }
-    res.status(200).json({ success: true, data: deletedProduct });
+    res.status(200).json({ success: true, message: "Product deleted successfully" });
   } catch (error) {
     console.error("Error in deleting product:", error.message);
     res.status(500).json({ success: false, message: "Server error" });
