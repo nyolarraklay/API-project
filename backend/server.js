@@ -15,7 +15,7 @@ app.use(express.json()); //allow express to parse JSON data in the request body
 
 app.use("/api/products", productRoutes); // Mounting the product route on the /api/products path)
 
-if (process.env.Node_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist"))); // Serve static files from the frontend build directory
 
   app.get("/{*any}", (req, res) => {
